@@ -4,20 +4,22 @@ import { Switch, Route, Link } from 'react-router-dom'
 const App = () => {
   return (
     <>
-    <div className='homePageHeader'>
+    <div className=''>
       <h1>Lambda Eats</h1>
-      <Link to='/'
-        className='order-pizza' >
-        <button className='order-pizza'>Pizza?</button>
+      <Link to='/'>
+        <button className=''>Home</button>
+      </Link>
+      <Link to='/pizza'>
+        <button id='.order-pizza'>Pizza?</button>
       </Link>
     </div>
 
     <Switch>
-      <Route path='/'>
-        <MyForm />
+      <Route path='/pizza'>
+        <> </>
       </Route>
-      <Route>
-
+      <Route path='/'>
+        <> </>
       </Route>
     </Switch>
     </>
