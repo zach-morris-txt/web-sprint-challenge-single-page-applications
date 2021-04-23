@@ -4,11 +4,22 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter as Router } from 'react-router-dom' 
 
+import axios from 'axios'
+import * as yup from 'yup'
+
 ReactDOM.render(
     <Router>
         <App />
     </Router>, document.getElementById("root"));
 
+//NEED NEW FILE FOR YUP SCHEMA VALIDATION:
+export default function yup.object().shape({
+    name: yup
+            .string()
+            .min(2, 'name must be atleast 2 characters')
+})
+
+//NEED NEW FILE FOR ORDER FORM COMPONENT????? :
 const initialFormValues = {
     name: '',
     size: '',
@@ -19,6 +30,7 @@ const initialFormValues = {
     special: '',
 };
 
+
 const initialFormErrors = {
 
 };
@@ -26,8 +38,24 @@ const initialFormErrors = {
 
 function MyForm() {
     const [formValues, setFormValues] = useState(initialFormValues)
+    const [formSubmissions, setFormSubmission] = useState(formValues)
 
     const order = event => {
+        event.preventDefault();
+        const newFormSubmission = {
+            name: formValues.name.trim(),
+            size:formValues.size,
+            special:formValues.special,
+        }
+        axios.post('https://reqres.in/api/orders',newFormSubmission)
+            .then(response => {
+                setFormSubmission([...formSubmissions, response.data])
+                setFormValues(initialFormValues)
+            })
+            .catch(error => {
+                debugger
+            })
+        order();
     }
     const change = event => {
         const {name, value, type, checked} = event.target;
@@ -91,7 +119,7 @@ function MyForm() {
                     name='special'
                 />
             </label>
-            <button>Add to Order</button>
+            <button id='order-button' onClick={order}>Add to Order</button>
         </form>
     )
 };
